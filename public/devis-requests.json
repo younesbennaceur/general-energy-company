@@ -1,0 +1,36 @@
+[
+  {
+    "id": 1755879369175,
+    "date": "2025-08-22T16:16:09.175Z",
+    "timestamp": "22/08/2025 18:16:09",
+    "clientType": "particulier",
+    "singleGlazingWindows": "77",
+    "wallInsulationWork": "oui",
+    "buildingFloors": "7",
+    "sharedWalls": "5",
+    "householdSize": "3",
+    "fiscalIncome": "-3",
+    "lastName": "bennaceur",
+    "firstName": "younes",
+    "phone": "0758230524",
+    "email": "younesbennaceur06@gamil.com"
+  },
+  {
+    "id": 1755880164377,
+    "date": "2025-08-22T16:29:24.377Z",
+    "timestamp": "22/08/2025 18:29:24",
+    "clientType": "particulier",
+    "renovationTypes": [
+      "systeme-solaire-combine"
+    ],
+    "propertyType": "appartement",
+    "ownershipStatus": "locataire",
+    "postalCode": "7774",
+    "workTimeline": "asap",
+    "singleGlazingWindows": "487",
+    "lastName": "bennaceur",
+    "firstName": "younes",
+    "phone": "0758230524",
+    "email": "younesbennaceur48@gmail.com"
+  }
+]
