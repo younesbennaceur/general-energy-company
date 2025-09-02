@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import emailjs from '@emailjs/browser';
 import Container from "@/components/layout/Container";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -909,11 +910,21 @@ const getStepsForClientType = (clientType) => {
             }
           ]
         },
-        {
+                {
           number: 6,
           title: "Contact",
           icon: Send,
           fields: [
+            {
+              name: "civilite",
+              label: "Civilité",
+              type: "select",
+              required: true,
+              options: [
+                { value: "M", label: "M." },
+                { value: "Mme", label: "Mme" }
+              ]
+            },
             {
               name: "lastName",
               label: "Nom",
@@ -945,6 +956,33 @@ const getStepsForClientType = (clientType) => {
               required: true,
               placeholder: "Numéro de téléphone",
               gridCols: "sm:col-span-1"
+            },
+            {
+              name: "city",
+              label: "Ville",
+              type: "text",
+              required: true,
+              placeholder: "Ville",
+              gridCols: "sm:col-span-2"
+            },
+            {
+              name: "availability",
+              label: "Créneaux de visite technique",
+              type: "multiselect",
+              required: true,
+              options: [
+                { value: "matin", label: "Matin" },
+                { value: "apres-midi", label: "Après-midi" },
+                { value: "soiree", label: "Soirée" }
+              ],
+              gridCols: "sm:col-span-2"
+            },
+            {
+              name: "comments",
+              label: "Informations complémentaires",
+              type: "textarea",
+              placeholder: "Précisez contraintes, questions, informations importantes...",
+              gridCols: "sm:col-span-2"
             }
           ]
         }
@@ -1226,11 +1264,21 @@ const getStepsForClientType = (clientType) => {
             }
           ]
         },
-        {
+                        {
           number: 6,
           title: "Contact",
           icon: Send,
           fields: [
+            {
+              name: "civilite",
+              label: "Civilité",
+              type: "select",
+              required: true,
+              options: [
+                { value: "M", label: "M." },
+                { value: "Mme", label: "Mme" }
+              ]
+            },
             {
               name: "lastName",
               label: "Nom",
@@ -1264,11 +1312,30 @@ const getStepsForClientType = (clientType) => {
               gridCols: "sm:col-span-1"
             },
             {
-              name: "company",
-              label: "Entreprise",
+              name: "city",
+              label: "Ville",
               type: "text",
               required: true,
-              placeholder: "Nom de l'entreprise",
+              placeholder: "Ville",
+              gridCols: "sm:col-span-2"
+            },
+            {
+              name: "availability",
+              label: "Créneaux de visite technique",
+              type: "multiselect",
+              required: true,
+              options: [
+                { value: "matin", label: "Matin" },
+                { value: "apres-midi", label: "Après-midi" },
+                { value: "soiree", label: "Soirée" }
+              ],
+              gridCols: "sm:col-span-2"
+            },
+            {
+              name: "comments",
+              label: "Informations complémentaires",
+              type: "textarea",
+              placeholder: "Précisez contraintes, questions, informations importantes...",
               gridCols: "sm:col-span-2"
             }
           ]
@@ -1465,11 +1532,21 @@ const getStepsForClientType = (clientType) => {
             }
           ]
         },
-        {
+                {
           number: 5,
           title: "Contact",
           icon: Send,
           fields: [
+            {
+              name: "civilite",
+              label: "Civilité",
+              type: "select",
+              required: true,
+              options: [
+                { value: "M", label: "M." },
+                { value: "Mme", label: "Mme" }
+              ]
+            },
             {
               name: "lastName",
               label: "Nom",
@@ -1503,11 +1580,30 @@ const getStepsForClientType = (clientType) => {
               gridCols: "sm:col-span-1"
             },
             {
-              name: "position",
-              label: "Fonction",
+              name: "city",
+              label: "Ville",
               type: "text",
               required: true,
-              placeholder: "Fonction/Poste",
+              placeholder: "Ville",
+              gridCols: "sm:col-span-2"
+            },
+            {
+              name: "availability",
+              label: "Créneaux de visite technique",
+              type: "multiselect",
+              required: true,
+              options: [
+                { value: "matin", label: "Matin" },
+                { value: "apres-midi", label: "Après-midi" },
+                { value: "soiree", label: "Soirée" }
+              ],
+              gridCols: "sm:col-span-2"
+            },
+            {
+              name: "comments",
+              label: "Informations complémentaires",
+              type: "textarea",
+              placeholder: "Précisez contraintes, questions, informations importantes...",
               gridCols: "sm:col-span-2"
             }
           ]
@@ -1527,6 +1623,13 @@ export default function DevisPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [showValidationErrors, setShowValidationErrors] = useState(false);
+
+  // Configuration EmailJS
+  const EMAILJS_CONFIG = {
+    serviceId: 'service_ge79rzl',
+    templateId: 'template_j0gd6sw',
+    publicKey: 'wX6VSHJMbAH2gpRao'
+  };
 
   // Obtenir les étapes pour le type de client sélectionné
   const stepsData = getStepsForClientType(formData.clientType);
@@ -1627,14 +1730,177 @@ export default function DevisPage() {
     setSubmitStatus(null);
 
     try {
-      // Simulation d'envoi d'email - vous pouvez intégrer EmailJS ici
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      console.log('Données du formulaire:', formData);
-      setSubmitStatus('success');
+      console.log('📧 Envoi de l\'email via EmailJS...');
+
+    // Remplacez la section de préparation des données EmailJS dans votre fonction handleSubmit par ceci :
+
+const templateParams = {
+  // === INFORMATIONS DE CONTACT ===
+  client_civilite: formData.civilite || '',
+  client_lastName: formData.lastName || '',
+  client_firstName: formData.firstName || '',
+  client_email: formData.email || '',
+  client_phone: formData.phone || '',
+  client_city: formData.city || '',
+  postal_code: formData.postalCode || '',
+  client_company: formData.company || '',
+  client_position: formData.position || '',
+  
+  // === TYPE DE CLIENT ===
+  client_type: formData.clientType || '',
+  
+  // === SERVICES DEMANDÉS ===
+  services: Array.isArray(formData.services) 
+    ? formData.services.join(', ') 
+    : (formData.services || ''),
+  
+  // === INFORMATIONS LOGEMENT (Particuliers) ===
+  property_type: formData.propertyType || '',
+  habitable_surface: formData.habitableSurface || '',
+  construction_year: formData.constructionYear || '',
+  occupants: formData.occupants || '',
+  owner_status: formData.ownerStatus || '',
+  
+  // === POMPE À CHALEUR ===
+  current_heating_type: formData.currentHeatingType || '',
+  heating_age: formData.heatingAge || '',
+  heating_bill: formData.heatingBill || '',
+  radiator_type: formData.radiatorType || '',
+  insulation: formData.insulation || '',
+  pac_usage: formData.pacUsage || '',
+  exterior_location: formData.exteriorLocation || '',
+  acoustic_constraints: formData.acousticConstraints || '',
+  pac_preference: formData.pacPreference || '',
+  
+  // === CHAUFFE-EAU / BALLON THERMODYNAMIQUE ===
+  current_water_heater_type: formData.currentWaterHeaterType || '',
+  current_capacity: formData.currentCapacity || '',
+  water_heater_age: formData.waterHeaterAge || '',
+  water_consumption: formData.waterConsumption || '',
+  technical_location: formData.technicalLocation || '',
+  roof_orientation: formData.roofOrientation || '',
+  roof_inclination: formData.roofInclination || '',
+  shading: formData.shading || '',
+  roof_type: formData.roofType || '',
+  
+  // === CLIMATISATION ===
+  rooms_to_climate: Array.isArray(formData.roomsToClimate)
+    ? formData.roomsToClimate.join(', ')
+    : (formData.roomsToClimate || ''),
+  surface_to_climate: formData.surfaceToClimate || '',
+  rooms_orientation: formData.roomsOrientation || '',
+  climate_insulation: formData.climateInsulation || '',
+  ceiling_height: formData.ceilingHeight || '',
+  
+  // === BATTERIE DE STOCKAGE ===
+  existing_panels: formData.existingPanels || '',
+  panels_power: formData.panelsPower || '',
+  current_autoconsumption: formData.currentAutoconsumption || '',
+  electric_bill_monthly: formData.electricBillMonthly || '',
+  
+  // === SYSTÈME SOLAIRE COMBINÉ ===
+  surface_to_heat: formData.surfaceToHeat || '',
+  hot_water_consumption: formData.hotWaterConsumption || '',
+  current_heating_combined: formData.currentHeatingCombined || '',
+  budget_combined: formData.budgetCombined || '',
+  
+  // === SITUATION FINANCIÈRE ===
+  fiscal_income: formData.fiscalIncome || '',
+  budget: formData.budget || '',
+  financing_mode: formData.financingMode || '',
+  payback_time: formData.paybackTime || '',
+  
+  // === EXPLOITATION AGRICOLE ===
+  exploitation_type: formData.exploitationType || '',
+  exploitation_size: formData.exploitationSize || '',
+  buildings_number: formData.buildingsNumber || '',
+  buildings_surface: formData.buildingsSurface || '',
+  electric_bill: formData.electricBill || '',
+  kwh_annual: formData.kwhAnnual || '',
+  consumption_peak: formData.consumptionPeak || '',
+  consumption_hours: formData.consumptionHours || '',
+  specific_needs: Array.isArray(formData.specificNeeds)
+    ? formData.specificNeeds.join(', ')
+    : (formData.specificNeeds || ''),
+  network_connection: formData.networkConnection || '',
+  counter_distance: formData.counterDistance || '',
+  existing_structure: formData.existingStructure || '',
+  buildings_age: formData.buildingsAge || '',
+  financial_objectives: Array.isArray(formData.financialObjectives)
+    ? formData.financialObjectives.join(', ')
+    : (formData.financialObjectives || ''),
+  legal_structure: formData.legalStructure || '',
+  
+  // === ENTREPRISE INDUSTRIELLE ===
+  sector: formData.sector || '',
+  employees: formData.employees || '',
+  revenue: formData.revenue || '',
+  sites: formData.sites || '',
+  power: formData.power || '',
+  consumption_profile: formData.consumptionProfile || '',
+  gas_consumption: formData.gasConsumption || '',
+  fuel_consumption: formData.fuelConsumption || '',
+  steam_consumption: formData.steamConsumption || '',
+  process_temperature: formData.processTemperature || '',
+  refrigeration_needs: formData.refrigerationNeeds || '',
+  production_24h: formData.production24h || '',
+  surface_over_1000: formData.surfaceOver1000 || '',
+  objectives_2030: formData.objectives2030 || '',
+  energy_audit: formData.energyAudit || '',
+  iso_14001: formData.iso14001 || '',
+  iso_50001: formData.iso50001 || '',
+  other_certifications: formData.otherCertifications || '',
+  
+  // === COLLECTIVITÉ ===
+  collectivity_type: formData.collectivityType || '',
+  buildings: Array.isArray(formData.buildings)
+    ? formData.buildings.join(', ')
+    : (formData.buildings || ''),
+  total_surface: formData.totalSurface || '',
+  general_condition: formData.generalCondition || '',
+  construction_period: formData.constructionPeriod || '',
+  energy_budget: formData.energyBudget || '',
+  objectives: Array.isArray(formData.objectives)
+    ? formData.objectives.join(', ')
+    : (formData.objectives || ''),
+  available_budget: formData.availableBudget || '',
+  financing: formData.financing || '',
+  preliminary_studies: formData.preliminaryStudies || '',
+  constraints: Array.isArray(formData.constraints)
+    ? formData.constraints.join(', ')
+    : (formData.constraints || ''),
+  
+  // === PROJET ===
+  timeline: formData.timeline || '',
+  motivation: formData.motivation || '',
+  availability: Array.isArray(formData.availability)
+    ? formData.availability.join(', ')
+    : (formData.availability || ''),
+  comments: formData.comments || '',
+  
+  // === MÉTADONNÉES ===
+  submission_date: new Date().toLocaleDateString('fr-FR'),
+  submission_time: new Date().toLocaleTimeString('fr-FR')
+};
+
+      // Envoyer l'email via EmailJS
+      const response = await emailjs.send(
+        EMAILJS_CONFIG.serviceId,
+        EMAILJS_CONFIG.templateId,
+        templateParams,
+        EMAILJS_CONFIG.publicKey
+      );
+
+      if (response.status === 200) {
+        console.log('✅ Email envoyé avec succès via EmailJS');
+        setSubmitStatus('success');
+        
+      } else {
+        throw new Error(`Erreur EmailJS: ${response.status}`);
+      }
       
     } catch (error) {
-      console.error('Erreur lors de l\'envoi:', error);
+      console.error('❌ Erreur lors de l\'envoi de l\'email:', error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -1896,22 +2162,20 @@ export default function DevisPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header avec Navbar */}
-      <div className="bg-blue-900 text-white px-4 sm:px-6 lg:px-8 py-6">
-        <div className="max-w-7xl mx-auto">
-          <Navbar />
-          <div className="text-center mt-8 mb-6">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
-              Demande de devis personnalisée
-            </h1>
-            <p className="text-lg text-gray-200">
-              Remplissez ce formulaire adapté à vos besoins. Un conseiller spécialisé vous recontactera rapidement.
-            </p>
-          </div>
+      <Container type="intrinsic" className="bg-foreground text-white px-4 sm:px-6 lg:px-8 py-6">
+        <Navbar />
+        <div className="text-center mt-8 mb-6">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
+            Demande de devis personnalisée
+          </h1>
+          <p className="text-lg text-gray-200">
+            Remplissez ce formulaire adapté à vos besoins. Un conseiller spécialisé vous recontactera rapidement.
+          </p>
         </div>
-      </div>
+      </Container>
 
       {/* Contenu principal */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <Container type="extrinsic" className="py-8">
         {/* Indicateur de progression */}
         <div className="flex justify-center mb-8 overflow-x-auto">
           <div className="flex items-center space-x-2 min-w-max px-4">
@@ -2012,28 +2276,29 @@ export default function DevisPage() {
 
             {/* Boutons de navigation */}
             <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
-              <button
+              <Button
                 onClick={prevStep}
                 disabled={currentStep === 1}
-                className="flex items-center space-x-2 px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                variant="outline"
+                className="flex items-center space-x-2"
               >
                 <ChevronLeft className="w-4 h-4" />
                 <span>Précédent</span>
-              </button>
+              </Button>
 
               {currentStep < stepsData.length ? (
-                <button
+                <Button
                   onClick={nextStep}
-                  className="flex items-center space-x-2 px-6 py-3 bg-blue-900 text-white rounded-lg hover:bg-blue-800"
+                  className="flex items-center space-x-2 bg-blue-900 hover:bg-blue-800"
                 >
                   <span>Suivant</span>
                   <ChevronRight className="w-4 h-4" />
-                </button>
+                </Button>
               ) : (
-                <button
+                <Button
                   onClick={handleSubmit}
                   disabled={isSubmitting || submitStatus === 'success'}
-                  className="flex items-center space-x-2 px-6 py-3 bg-blue-900 text-white rounded-lg hover:bg-blue-800 disabled:bg-gray-400"
+                  className="flex items-center space-x-2 bg-blue-900 hover:bg-blue-800 disabled:bg-gray-400"
                 >
                   {isSubmitting ? (
                     <>
@@ -2041,16 +2306,40 @@ export default function DevisPage() {
                       <span>Envoi en cours...</span>
                     </>
                   ) : submitStatus === 'success' ? (
-                    <span>✅ Envoyé</span>
+                    <span>Envoyé avec succès</span>
                   ) : (
                     <span>Envoyer ma demande</span>
                   )}
-                </button>
+                </Button>
               )}
             </div>
+
+            {/* Information légale pour la dernière étape */}
+            {currentStep === stepsData.length && (
+              <div className="mt-8 p-4 bg-gray-50 rounded-lg text-sm text-gray-600">
+                <p className="mb-2">
+                  Les informations recueillies via ce formulaire nous permettent de vous recontacter dans le cadre de votre demande de devis et de vous proposer un accompagnement personnalisé dans votre projet énergétique.
+                </p>
+                <p>
+                  Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression de vos données. Pour en savoir plus, consultez notre politique de confidentialité.
+                </p>
+              </div>
+            )}
           </div>
         )}
-      </div>
+      </Container>
+
+      {/* Footer */}
+      <Container
+        type="intrinsic"
+        style={{
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundImage: `url(/assets/footer.svg)`,
+        }}
+      >
+        <Footer />
+      </Container>
     </div>
   );
 }

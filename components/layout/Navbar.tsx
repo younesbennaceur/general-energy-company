@@ -93,7 +93,7 @@ export default function Navbar() {
           </DropdownMenu>
         </li>
         <li>
-          <Link href="/" className="hover:text-blue-900 transition-colors">
+          <Link href="/a-propos" className="hover:text-blue-900 transition-colors">
             À propos
           </Link>
         </li>
@@ -156,7 +156,7 @@ export default function Navbar() {
             </div>
 
             <Link
-              href="/"
+              href="/a-propos"
               className="text-lg font-medium text-gray-700 hover:text-blue-900 transition-colors"
               onClick={() => setIsOpen(false)}
             >
