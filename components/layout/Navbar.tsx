@@ -68,7 +68,7 @@ export default function Navbar() {
           </Link>
         </li>
         <li>
-          <Link href="/" className="hover:text-blue-900 transition-colors">
+          <Link href="/nos-services" className="hover:text-blue-900 transition-colors">
             Nos services
           </Link>
         </li>
@@ -129,7 +129,7 @@ export default function Navbar() {
               Accueil
             </Link>
             <Link
-              href="/"
+              href="/nos-services"
               className="text-lg font-medium text-gray-700 hover:text-blue-900 transition-colors"
               onClick={() => setIsOpen(false)}
             >
