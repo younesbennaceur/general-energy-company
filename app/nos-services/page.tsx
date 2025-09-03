@@ -26,28 +26,28 @@ const solutions = [
     id: 3,
     title: "Pompe à chaleur",
     description: "Chauffez ou rafraîchissez votre logement avec une technologie performante et économe en énergie, idéale en hiver comme en été.",
-    image: "/assets/3.png",
+    image: "/assets/3.jpeg",
     imageAlt: "Pompe à chaleur moderne"
   },
   {
     id: 4,
     title: "Climatisation",
     description: "Gardez un intérieur frais en été et confortable en hiver avec des équipements basse consommation.",
-    image: "/assets/4.png",
+    image: "/assets/1.jpg",
     imageAlt: "Système de climatisation"
   },
   {
     id: 5,
     title: "Système solaire combiné",
     description: "Combinez production d'électricité et chauffage pour une solution énergétique complète et optimisée.",
-    image: "/assets/5.png",
+    image: "/assets/5.jpg",
     imageAlt: "Installation solaire combinée"
   },
   {
     id: 6,
     title: "Ballon thermodynamique",
     description: "Combinez production d'électricité et chauffage pour une solution énergétique complète et optimisée.",
-    image: "/assets/6.png",
+    image: "/assets/6.jpg",
     imageAlt: "Ballon thermodynamique"
   }
 ];
@@ -134,7 +134,7 @@ export default function ServicesPage() {
                       width={60}
                       height={60}
                       alt="aide-badge"
-                      className="sm:w-[70px] sm:h-[70px] lg:w-[80px] lg:h-[80px]"
+                     
                     />     
                     <h5 className="text-xs sm:text-sm text-gray-600">Jusqu'à</h5>
                     <h5 className="text-sm sm:text-base lg:text-lg font-bold text-gray-800">50 000€</h5>
@@ -147,7 +147,7 @@ export default function ServicesPage() {
                       width={60}
                       height={60}
                       alt="cee-badge"
-                      className="sm:w-[70px] sm:h-[70px] lg:w-[80px] lg:h-[80px]"
+                      
                     />  
                     <h5 className="text-sm sm:text-base lg:text-lg font-bold text-gray-800">Prime CEE</h5>   
                     <h5 className="text-xs sm:text-sm text-gray-600 max-w-full sm:max-w-[200px] lg:w-64">
