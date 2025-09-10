@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
-
 import "@/styles/globals.css";
 import Preloader from "@/components/Preloader";
 
@@ -11,9 +10,23 @@ export const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "General Solar",
+  title: "CGEnergies",
   description: "General Solar for developers.",
   keywords: ["General Solar", "ui icons", "ux icons", "design tools"],
+  icons: {
+    icon: [
+      {
+        url: "/assets/logo.png",
+        sizes: "16x16",
+        type: "image/png",
+      },
+      {
+        url: "/assets/logo.png", 
+        sizes: "32x32",
+        type: "image/png",
+      }
+    ],
+  },
 };
 
 export default function RootLayout({
